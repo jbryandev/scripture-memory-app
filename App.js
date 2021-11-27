@@ -1,25 +1,9 @@
 import React from 'react';
-import styled from 'styled-components/native';
-import { View, Text } from 'react-native';
+import Card from './components/Card';
+import CardCarousel from './components/CardCarousel';
+import { VERSES } from './data/verses';
 
 export default function App() {
-  return (
-    <Container>
-      <Title color="palevioletred">Expo with 💅 Styled Components</Title>
-      <Title color="chocolate">iOS • Android • web</Title>
-    </Container>
-  );
+  const verses = VERSES;
+  return <Card verse={verses[0]} />;
 }
-
-const Container = styled(View)`
-  flex: 1;
-  background-color: papayawhip;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Title = styled(Text)`
-  font-size: 24px;
-  font-weight: 500;
-  color: ${(props) => props.color};
-`;
