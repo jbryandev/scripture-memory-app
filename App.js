@@ -5,5 +5,5 @@ import { VERSES } from './data/verses';
 
 export default function App() {
   const verses = VERSES;
-  return <Card verse={verses[0]} />;
+  return <Card verse={verses[3]} />;
 }
