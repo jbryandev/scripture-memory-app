@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { SafeAreaView, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import styled from 'styled-components';
 import CardFlip from './CardFlip';
 
@@ -14,19 +14,20 @@ const Card = ({ verse }) => {
   return (
     <ViewContainer darkMode={darkMode}>
       <CardContainer darkMode={darkMode} ref={cardFlip}>
-        <CardFront darkMode={darkMode} onPress={handlePress}>
+        <CardFront darkMode={darkMode} activeOpacity={1} onPress={handlePress}>
           <CardFront__VerseNumber darkMode={darkMode}>
-            {/* {verse.verseNumber + ' ' + verse.translation} */}
             {verse.verseNumber}
           </CardFront__VerseNumber>
         </CardFront>
-        <CardBack darkMode={darkMode} onPress={handlePress}>
+        <CardBack darkMode={darkMode} activeOpacity={1} onPress={handlePress}>
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardBack__VerseNumber>
-          <CardBack__VerseText darkMode={darkMode}>
-            {verse.verseText}
-          </CardBack__VerseText>
+          <CardBack__VerseTextContainer>
+            <CardBack__VerseText darkMode={darkMode}>
+              {verse.verseText}
+            </CardBack__VerseText>
+          </CardBack__VerseTextContainer>
           <CardBack__VerseTags darkMode={darkMode}>
             {verse.verseTags}
           </CardBack__VerseTags>
@@ -37,8 +38,8 @@ const Card = ({ verse }) => {
 };
 
 const ViewContainer = styled.SafeAreaView`
-  height: 100%;
-  width: 100%;
+  height: 800px;
+  width: 400px;
   background-color: ${({ darkMode }) => (darkMode ? '#121212' : '#f5fcff')};
 `;
 
@@ -50,9 +51,11 @@ const CardContainer = styled(CardFlip)`
   width: 100%;
 `;
 
-const BasicCard = styled.Pressable`
+const BasicCard = styled.TouchableOpacity`
   width: 90%;
   height: 85%;
+  max-width: 600px;
+  max-height: 800px;
   justify-content: center;
   align-items: center;
   background-color: ${(props) =>
@@ -88,8 +91,13 @@ const CardBack__VerseNumber = styled.Text`
     props.darkMode ? '#rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'};
 `;
 
-const CardBack__VerseText = styled.Text`
+const CardBack__VerseTextContainer = styled.View`
   flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CardBack__VerseText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   text-align: justify;
