@@ -7,6 +7,10 @@ const Card = ({ verse }) => {
   const window = useWindowDimensions();
   const theme = useColorScheme();
   const darkMode = theme === 'dark';
+  const cardFlip = useRef(null);
+  const handlePress = () => {
+    cardFlip.current.flipCard();
+  };
 
   return (
     <ViewContainer
@@ -14,13 +18,13 @@ const Card = ({ verse }) => {
       screenWidth={window.width}
       screenHeight={window.height}
     >
-      <CardContainer darkMode={darkMode}>
-        <CardFront darkMode={darkMode} activeOpacity={1}>
+      <CardContainer darkMode={darkMode} ref={cardFlip}>
+        <CardFront darkMode={darkMode} activeOpacity={1} onPress={handlePress}>
           <CardFront__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardFront__VerseNumber>
         </CardFront>
-        <CardBack darkMode={darkMode} activeOpacity={1}>
+        <CardBack darkMode={darkMode} activeOpacity={1} onPress={handlePress}>
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardBack__VerseNumber>
@@ -44,11 +48,17 @@ const ViewContainer = styled.SafeAreaView`
   background-color: ${({ darkMode }) => (darkMode ? '#121212' : '#f5fcff')};
 `;
 
-const CardContainer = styled(CardFlip)``;
+const CardContainer = styled(CardFlip)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`;
 
 const BasicCard = styled.TouchableOpacity`
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 85%;
   max-width: 600px;
   max-height: 800px;
   justify-content: center;
@@ -61,6 +71,7 @@ const BasicCard = styled.TouchableOpacity`
     props.darkMode
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
+  backface-visibility: hidden;
 `;
 
 const CardFront = styled(BasicCard)``;
