@@ -10,7 +10,6 @@ const Card = ({ verse }) => {
   const [flipped, setFlipped] = useState(false);
 
   const flip = () => {
-    console.log('called');
     const toValue = flipped ? 0 : 1;
     Animated.timing(rotation, {
       toValue: toValue,
@@ -50,25 +49,18 @@ const Card = ({ verse }) => {
       screenWidth={window.width}
       screenHeight={window.height}
     >
-      <CardContainer darkMode={darkMode}>
-        <CardFront
-          darkMode={darkMode}
-          onStartShouldSetResponder={() => true}
-          onStartShouldSetResponderCapture={() => true}
-          onResponderRelease={flip}
-          style={{ frontAnimatedStyle }}
-        >
+      <CardContainer
+        darkMode={darkMode}
+        onStartShouldSetResponder={() => true}
+        onStartShouldSetResponderCapture={() => true}
+        onResponderRelease={flip}
+      >
+        <CardFront darkMode={darkMode} style={frontAnimatedStyle}>
           <CardFront__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardFront__VerseNumber>
         </CardFront>
-        <CardBack
-          darkMode={darkMode}
-          onStartShouldSetResponder={() => true}
-          onStartShouldSetResponderCapture={() => true}
-          onResponderRelease={flip}
-          style={{ backAnimatedStyle }}
-        >
+        <CardBack darkMode={darkMode} style={backAnimatedStyle}>
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardBack__VerseNumber>
@@ -132,6 +124,7 @@ const CardFront__VerseNumber = styled.Text`
 
 const CardBack = styled(BasicCard)`
   justify-content: space-between;
+  transform: rotateY(180deg);
 `;
 
 const CardBack__VerseNumber = styled.Text`

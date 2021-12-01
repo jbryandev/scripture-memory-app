@@ -1,9 +1,5 @@
 {
   "expo": {
-    "name": "Scripture Memory App",
-    "icon": "assets/icon.png",
-    "version": "0.0.1",
-    "slug": "scripture-memory-app",
     "userInterfaceStyle": "automatic",
     "ios": {
       "userInterfaceStyle": "automatic"
