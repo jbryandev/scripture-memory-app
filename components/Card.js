@@ -84,6 +84,7 @@ const ViewContainer = styled.SafeAreaView`
   align-items: center;
   width: ${({ screenWidth }) => screenWidth}px;
   height: ${({ screenHeight }) => screenHeight}px;
+  /* background-color: yellow; */
 `;
 
 const CardContainer = styled(Animated.View)`
@@ -91,6 +92,7 @@ const CardContainer = styled(Animated.View)`
   height: 85%;
   justify-content: center;
   align-items: center;
+  /* background-color: red; */
 `;
 
 const BasicCard = styled(Animated.View)`
@@ -110,9 +112,15 @@ const BasicCard = styled(Animated.View)`
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
   backface-visibility: hidden;
+  /* background-color: blue; */
 `;
 
 const CardFront = styled(BasicCard)``;
+
+const CardBack = styled(BasicCard)`
+  justify-content: space-between;
+  transform: rotateY(180deg);
+`;
 
 const CardFront__VerseNumber = styled.Text`
   font-size: 30px;
@@ -120,11 +128,6 @@ const CardFront__VerseNumber = styled.Text`
   text-align: center;
   color: ${(props) =>
     props.darkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)'};
-`;
-
-const CardBack = styled(BasicCard)`
-  justify-content: space-between;
-  transform: rotateY(180deg);
 `;
 
 const CardBack__VerseNumber = styled.Text`
