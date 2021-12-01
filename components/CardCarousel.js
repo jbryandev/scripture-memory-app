@@ -10,6 +10,10 @@ const CardCarousel = ({ verse }) => {
   const darkMode = theme === 'dark';
   const verses = VERSES;
 
+  const handleRotate = (contentWidth, contentHeight) => {
+    console.log(contentWidth, contentHeight);
+  };
+
   return (
     <CardCarouselView
       horizontal
@@ -17,9 +21,9 @@ const CardCarousel = ({ verse }) => {
       snapToInterval={window.width}
       decelerationRate={'fast'}
       darkMode={darkMode}
-      onContentSizeChange={(contentWidth, contentHeight) => {
-        // console.log(contentWidth, contentHeight);
-      }}
+      onContentSizeChange={(contentWidth, contentHeight) =>
+        handleRotate(contentWidth, contentHeight)
+      }
     >
       <Card verse={verses[0]} />
       <Card verse={verses[1]} />
