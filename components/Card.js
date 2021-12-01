@@ -1,12 +1,48 @@
-import React, { useRef } from 'react';
-import { useColorScheme, useWindowDimensions } from 'react-native';
-import styled from 'styled-components';
-import CardFlip from './CardFlip';
+import React, { useRef, useState } from 'react';
+import { Animated, useColorScheme, useWindowDimensions } from 'react-native';
+import styled from 'styled-components/native';
 
 const Card = ({ verse }) => {
   const window = useWindowDimensions();
   const theme = useColorScheme();
   const darkMode = theme === 'dark';
+  const rotation = useRef(new Animated.Value(0)).current;
+  const [flipped, setFlipped] = useState(false);
+
+  const flip = () => {
+    console.log('called');
+    const toValue = flipped ? 0 : 1;
+    Animated.timing(rotation, {
+      toValue: toValue,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+    setFlipped(!flipped);
+  };
+
+  const frontAnimatedStyle = {
+    transform: [
+      { perspective: 800 },
+      {
+        rotateY: rotation.interpolate({
+          inputRange: [0, 1],
+          outputRange: ['0deg', '180deg'],
+        }),
+      },
+    ],
+  };
+
+  const backAnimatedStyle = {
+    transform: [
+      { perspective: -800 },
+      {
+        rotateY: rotation.interpolate({
+          inputRange: [0, 1],
+          outputRange: ['180deg', '0deg'],
+        }),
+      },
+    ],
+  };
 
   return (
     <ViewContainer
@@ -15,12 +51,24 @@ const Card = ({ verse }) => {
       screenHeight={window.height}
     >
       <CardContainer darkMode={darkMode}>
-        <CardFront darkMode={darkMode} activeOpacity={1}>
+        <CardFront
+          darkMode={darkMode}
+          onStartShouldSetResponder={() => true}
+          onStartShouldSetResponderCapture={() => true}
+          onResponderRelease={flip}
+          style={{ frontAnimatedStyle }}
+        >
           <CardFront__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardFront__VerseNumber>
         </CardFront>
-        <CardBack darkMode={darkMode} activeOpacity={1}>
+        <CardBack
+          darkMode={darkMode}
+          onStartShouldSetResponder={() => true}
+          onStartShouldSetResponderCapture={() => true}
+          onResponderRelease={flip}
+          style={{ backAnimatedStyle }}
+        >
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardBack__VerseNumber>
@@ -39,18 +87,26 @@ const Card = ({ verse }) => {
 };
 
 const ViewContainer = styled.SafeAreaView`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
   width: ${({ screenWidth }) => screenWidth}px;
   height: ${({ screenHeight }) => screenHeight}px;
-  background-color: ${({ darkMode }) => (darkMode ? '#121212' : '#f5fcff')};
 `;
 
-const CardContainer = styled(CardFlip)``;
+const CardContainer = styled(Animated.View)`
+  width: 90%;
+  height: 85%;
+  justify-content: center;
+  align-items: center;
+`;
 
-const BasicCard = styled.TouchableOpacity`
+const BasicCard = styled(Animated.View)`
   width: 100%;
   height: 100%;
   max-width: 600px;
   max-height: 800px;
+  position: absolute;
   justify-content: center;
   align-items: center;
   background-color: ${(props) =>
@@ -61,6 +117,7 @@ const BasicCard = styled.TouchableOpacity`
     props.darkMode
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
+  backface-visibility: hidden;
 `;
 
 const CardFront = styled(BasicCard)``;

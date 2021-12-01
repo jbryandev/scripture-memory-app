@@ -1,6 +1,6 @@
 import React from 'react';
 import { useColorScheme, useWindowDimensions } from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import Card from './Card';
 import { VERSES } from '../data/verses';
 
