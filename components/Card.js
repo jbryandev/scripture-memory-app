@@ -11,7 +11,6 @@ const Card = ({ verse }) => {
 
   const flipCard = () => {
     const toValue = flipped ? 0 : 1;
-    console.log(toValue);
     Animated.timing(rotation, {
       toValue: toValue,
       duration: 500,
@@ -21,13 +20,12 @@ const Card = ({ verse }) => {
   };
 
   const setTransformStyle = (cardSide) => {
-    const perspective = cardSide == 'back' ? -800 : 800;
+    // const perspective = cardSide == 'back' ? -800 : 800;
     const outputRange =
-      cardSide == 'back' ? ['180deg', '0deg'] : ['0deg', '180deg'];
-    console.log(outputRange);
+      cardSide == 'back' ? ['-180deg', '0deg'] : ['0deg', '180deg'];
     return {
       transform: [
-        { perspective: perspective },
+        { perspective: 800 },
         {
           rotateY: rotation.interpolate({
             inputRange: [0, 1],
@@ -49,8 +47,8 @@ const Card = ({ verse }) => {
   return (
     <ViewContainer
       darkMode={darkMode}
-      screenWidth={window.width}
-      screenHeight={window.height}
+      screenWidth={Math.min(window.width, 700)}
+      screenHeight={Math.min(window.height, 900)}
     >
       <CardContainer
         darkMode={darkMode}
@@ -58,11 +56,11 @@ const Card = ({ verse }) => {
         onStartShouldSetResponderCapture={() => true}
         onResponderRelease={flipCard}
       >
-        {/* <CardFront darkMode={darkMode} style={setTransformStyle('front')}>
+        <CardFront darkMode={darkMode} style={setTransformStyle('front')}>
           <CardFront__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardFront__VerseNumber>
-        </CardFront> */}
+        </CardFront>
         <CardBack darkMode={darkMode} style={setTransformStyle('back')}>
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
@@ -112,11 +110,12 @@ const BasicCard = styled(Animated.View)`
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
   backface-visibility: hidden;
+  cursor: pointer;
+  user-select: none;
 `;
 
 const CardFront = styled(BasicCard)`
   justify-content: center;
-  z-index: 1;
 `;
 
 const CardBack = styled(BasicCard)`

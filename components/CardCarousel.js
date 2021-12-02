@@ -11,14 +11,14 @@ const CardCarousel = ({ verse }) => {
   const verses = VERSES;
 
   const handleRotate = (contentWidth, contentHeight) => {
-    console.log(contentWidth, contentHeight);
+    // console.log(contentWidth, contentHeight);
   };
 
   return (
     <CardCarouselView
       horizontal
       snapToAlignment='center'
-      snapToInterval={window.width}
+      snapToInterval={Math.min(window.width, 700)}
       decelerationRate={'fast'}
       darkMode={darkMode}
       onContentSizeChange={(contentWidth, contentHeight) =>
