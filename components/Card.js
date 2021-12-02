@@ -19,28 +19,29 @@ const Card = ({ verse }) => {
     setFlipped(!flipped);
   };
 
-  const frontAnimatedStyle = {
-    transform: [
-      { perspective: 800 },
-      {
-        rotateY: rotation.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '180deg'],
-        }),
-      },
-    ],
+  const setTransformStyle = (cardSide) => {
+    const perspective = cardSide == 'back' ? -800 : 800;
+    const outputRange =
+      cardSide == 'back' ? ['180deg', '0deg'] : ['0deg', '180deg'];
+    return {
+      transform: [
+        { perspective: perspective },
+        {
+          rotateY: rotation.interpolate({
+            inputRange: [0, 1],
+            outputRange: outputRange,
+          }),
+        },
+      ],
+    };
   };
 
-  const backAnimatedStyle = {
-    transform: [
-      { perspective: -800 },
-      {
-        rotateY: rotation.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['180deg', '0deg'],
-        }),
-      },
-    ],
+  const convertTagstoString = (tags) => {
+    let tagString = '';
+    tags.forEach((tag) => {
+      tagString += `#${tag} `;
+    });
+    return tagString.slice(0, -1);
   };
 
   return (
@@ -55,12 +56,12 @@ const Card = ({ verse }) => {
         onStartShouldSetResponderCapture={() => true}
         onResponderRelease={flip}
       >
-        <CardFront darkMode={darkMode} style={frontAnimatedStyle}>
+        <CardFront darkMode={darkMode} style={setTransformStyle('front')}>
           <CardFront__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardFront__VerseNumber>
         </CardFront>
-        <CardBack darkMode={darkMode} style={backAnimatedStyle}>
+        <CardBack darkMode={darkMode} style={setTransformStyle('back')}>
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardBack__VerseNumber>
@@ -70,7 +71,7 @@ const Card = ({ verse }) => {
             </CardBack__VerseText>
           </CardBack__VerseTextContainer>
           <CardBack__VerseTags darkMode={darkMode}>
-            {verse.verseTags}
+            {convertTagstoString(verse.verseTags)}
           </CardBack__VerseTags>
         </CardBack>
       </CardContainer>
@@ -84,15 +85,13 @@ const ViewContainer = styled.SafeAreaView`
   align-items: center;
   width: ${({ screenWidth }) => screenWidth}px;
   height: ${({ screenHeight }) => screenHeight}px;
-  /* background-color: yellow; */
 `;
 
 const CardContainer = styled(Animated.View)`
   width: 90%;
-  height: 85%;
+  height: 80%;
   justify-content: center;
   align-items: center;
-  /* background-color: red; */
 `;
 
 const BasicCard = styled(Animated.View)`
@@ -101,21 +100,21 @@ const BasicCard = styled(Animated.View)`
   max-width: 600px;
   max-height: 800px;
   position: absolute;
-  justify-content: center;
   align-items: center;
   background-color: ${(props) =>
     props.darkMode ? 'rgba(255, 255, 255, 0.1)' : '#f5fcff'};
-  padding: 20px;
+  padding: 7%;
   border-radius: 15px;
   box-shadow: ${(props) =>
     props.darkMode
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
   backface-visibility: hidden;
-  /* background-color: blue; */
 `;
 
-const CardFront = styled(BasicCard)``;
+const CardFront = styled(BasicCard)`
+  justify-content: center;
+`;
 
 const CardBack = styled(BasicCard)`
   justify-content: space-between;
@@ -145,7 +144,7 @@ const CardBack__VerseTextContainer = styled.View`
 `;
 
 const CardBack__VerseText = styled.Text`
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   text-align: justify;
   color: ${(props) =>
