@@ -9,8 +9,9 @@ const Card = ({ verse }) => {
   const rotation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
 
-  const flip = () => {
+  const flipCard = () => {
     const toValue = flipped ? 0 : 1;
+    console.log(toValue);
     Animated.timing(rotation, {
       toValue: toValue,
       duration: 500,
@@ -23,6 +24,7 @@ const Card = ({ verse }) => {
     const perspective = cardSide == 'back' ? -800 : 800;
     const outputRange =
       cardSide == 'back' ? ['180deg', '0deg'] : ['0deg', '180deg'];
+    console.log(outputRange);
     return {
       transform: [
         { perspective: perspective },
@@ -54,13 +56,13 @@ const Card = ({ verse }) => {
         darkMode={darkMode}
         onStartShouldSetResponder={() => true}
         onStartShouldSetResponderCapture={() => true}
-        onResponderRelease={flip}
+        onResponderRelease={flipCard}
       >
-        <CardFront darkMode={darkMode} style={setTransformStyle('front')}>
+        {/* <CardFront darkMode={darkMode} style={setTransformStyle('front')}>
           <CardFront__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
           </CardFront__VerseNumber>
-        </CardFront>
+        </CardFront> */}
         <CardBack darkMode={darkMode} style={setTransformStyle('back')}>
           <CardBack__VerseNumber darkMode={darkMode}>
             {verse.verseNumber}
@@ -90,6 +92,8 @@ const ViewContainer = styled.SafeAreaView`
 const CardContainer = styled(Animated.View)`
   width: 90%;
   height: 80%;
+  max-width: 600px;
+  max-height: 800px;
   justify-content: center;
   align-items: center;
 `;
@@ -97,8 +101,6 @@ const CardContainer = styled(Animated.View)`
 const BasicCard = styled(Animated.View)`
   width: 100%;
   height: 100%;
-  max-width: 600px;
-  max-height: 800px;
   position: absolute;
   align-items: center;
   background-color: ${(props) =>
@@ -114,6 +116,7 @@ const BasicCard = styled(Animated.View)`
 
 const CardFront = styled(BasicCard)`
   justify-content: center;
+  z-index: 1;
 `;
 
 const CardBack = styled(BasicCard)`
