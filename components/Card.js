@@ -110,8 +110,8 @@ const BasicCard = styled(Animated.View)`
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
   backface-visibility: hidden;
-  cursor: pointer;
-  user-select: none;
+  /* cursor: pointer; */
+  /* user-select: none; */
 `;
 
 const CardFront = styled(BasicCard)`
