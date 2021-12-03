@@ -1,5 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { Animated, useColorScheme, useWindowDimensions } from 'react-native';
+import {
+  Animated,
+  useColorScheme,
+  useWindowDimensions,
+  Platform,
+} from 'react-native';
 import styled from 'styled-components/native';
 
 const Card = ({ verse }) => {
@@ -8,6 +13,7 @@ const Card = ({ verse }) => {
   const darkMode = theme === 'dark';
   const rotation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
+  const platform = Platform.OS;
 
   const flipCard = () => {
     const toValue = flipped ? 0 : 1;
@@ -20,7 +26,6 @@ const Card = ({ verse }) => {
   };
 
   const setTransformStyle = (cardSide) => {
-    // const perspective = cardSide == 'back' ? -800 : 800;
     const outputRange =
       cardSide == 'back' ? ['-180deg', '0deg'] : ['0deg', '180deg'];
     return {
@@ -47,14 +52,17 @@ const Card = ({ verse }) => {
   return (
     <ViewContainer
       darkMode={darkMode}
-      screenWidth={Math.min(window.width, 700)}
-      screenHeight={Math.min(window.height, 900)}
+      screenWidth={window.width} // Math.min(window.width, 700)
+      screenHeight={window.height} // Math.min(window.height, 900)
     >
       <CardContainer
         darkMode={darkMode}
         onStartShouldSetResponder={() => true}
         onStartShouldSetResponderCapture={() => true}
         onResponderRelease={flipCard}
+        style={
+          platform === 'web' ? { cursor: 'pointer', userSelect: 'none' } : {}
+        }
       >
         <CardFront darkMode={darkMode} style={setTransformStyle('front')}>
           <CardFront__VerseNumber darkMode={darkMode}>
@@ -110,8 +118,6 @@ const BasicCard = styled(Animated.View)`
       ? '0 5px 15px rgba(0, 0, 0, 1)'
       : '0 5px 15px rgba(0, 0, 0, 0.5)'};
   backface-visibility: hidden;
-  /* cursor: pointer; */
-  /* user-select: none; */
 `;
 
 const CardFront = styled(BasicCard)`

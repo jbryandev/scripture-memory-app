@@ -18,7 +18,7 @@ const CardCarousel = ({ verse }) => {
     <CardCarouselView
       horizontal
       snapToAlignment='center'
-      snapToInterval={Math.min(window.width, 700)}
+      snapToInterval={window.width} // Math.min(window.width, 700)
       decelerationRate={'fast'}
       darkMode={darkMode}
       onContentSizeChange={(contentWidth, contentHeight) =>
