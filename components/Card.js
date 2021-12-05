@@ -8,12 +8,13 @@ import {
 import styled from 'styled-components/native';
 
 const Card = ({ verse }) => {
-  const window = useWindowDimensions();
   const theme = useColorScheme();
   const darkMode = theme === 'dark';
+  const platform = Platform.OS;
+  const window = useWindowDimensions();
+  const orientation = window.width > window.height ? 'landscape' : 'portrait';
   const rotation = useRef(new Animated.Value(0)).current;
   const [flipped, setFlipped] = useState(false);
-  const platform = Platform.OS;
 
   const flipCard = () => {
     const toValue = flipped ? 0 : 1;
@@ -52,11 +53,12 @@ const Card = ({ verse }) => {
   return (
     <ViewContainer
       darkMode={darkMode}
-      screenWidth={window.width} // Math.min(window.width, 700)
-      screenHeight={window.height} // Math.min(window.height, 900)
+      screenWidth={window.width}
+      screenHeight={window.height}
     >
       <CardContainer
         darkMode={darkMode}
+        orientation={orientation}
         onStartShouldSetResponder={() => true}
         onStartShouldSetResponderCapture={() => true}
         onResponderRelease={flipCard}
@@ -87,7 +89,7 @@ const Card = ({ verse }) => {
   );
 };
 
-const ViewContainer = styled.SafeAreaView`
+const ViewContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -96,10 +98,10 @@ const ViewContainer = styled.SafeAreaView`
 `;
 
 const CardContainer = styled(Animated.View)`
-  width: 90%;
-  height: 80%;
+  width: ${(props) => (props.orientation === 'portrait' ? '90%' : '75%')};
+  height: ${(props) => (props.orientation === 'portrait' ? '70%' : '80%')};
   max-width: 600px;
-  max-height: 800px;
+  max-height: 700px;
   justify-content: center;
   align-items: center;
 `;

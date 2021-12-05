@@ -1,39 +1,54 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useColorScheme, useWindowDimensions } from 'react-native';
 import styled from 'styled-components/native';
 import Card from './Card';
 import { VERSES } from '../data/verses';
 
-const CardCarousel = ({ verse }) => {
+const CardCarousel = (props) => {
   const window = useWindowDimensions();
   const theme = useColorScheme();
   const darkMode = theme === 'dark';
   const verses = VERSES;
+  const [scrollX, setScrollX] = useState(0);
+  const [viewIndex, setViewIndex] = useState(0);
+  const scrollView = useRef(null);
 
-  const handleRotate = (contentWidth, contentHeight) => {
-    // console.log(contentWidth, contentHeight);
+  const handleScrollEnd = (event) => {
+    const scrollPosition = Math.round(event.nativeEvent.contentOffset.x);
+    const contentWidth = Math.round(event.nativeEvent.contentSize.width);
+    const index = Math.round((scrollPosition / contentWidth) * verses.length);
+    setScrollX(scrollPosition);
+    setViewIndex(index);
+  };
+
+  const handleRotate = (contentWidth) => {
+    const position = (contentWidth * viewIndex) / verses.length;
+    scrollView.current.scrollTo({
+      x: position,
+      y: 0,
+      animated: true,
+    });
   };
 
   return (
-    <CardCarouselView
+    <Carousel
       horizontal
-      snapToAlignment='center'
-      snapToInterval={window.width} // Math.min(window.width, 700)
-      decelerationRate={'fast'}
       darkMode={darkMode}
-      onContentSizeChange={(contentWidth, contentHeight) =>
-        handleRotate(contentWidth, contentHeight)
-      }
+      snapToAlignment='center'
+      snapToInterval={window.width}
+      decelerationRate={'fast'}
+      onMomentumScrollEnd={(event) => handleScrollEnd(event)}
+      onContentSizeChange={(contentWidth) => handleRotate(contentWidth)}
+      ref={(ref) => (scrollView.current = ref)}
     >
-      <Card verse={verses[0]} />
-      <Card verse={verses[1]} />
-      <Card verse={verses[2]} />
-      <Card verse={verses[3]} />
-    </CardCarouselView>
+      {verses.map((verse, index) => (
+        <Card key={index} verse={verse} index={index} />
+      ))}
+    </Carousel>
   );
 };
 
-const CardCarouselView = styled.ScrollView`
+const Carousel = styled.ScrollView`
   background-color: ${({ darkMode }) => (darkMode ? '#121212' : '#f5fcff')};
 `;
 
