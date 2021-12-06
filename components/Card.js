@@ -94,12 +94,13 @@ const ViewContainer = styled.View`
   justify-content: center;
   align-items: center;
   width: ${({ screenWidth }) => screenWidth}px;
-  height: ${({ screenHeight }) => screenHeight}px;
+  height: 100%;
+  /* background-color: yellow; */
 `;
 
 const CardContainer = styled(Animated.View)`
-  width: ${(props) => (props.orientation === 'portrait' ? '90%' : '75%')};
-  height: ${(props) => (props.orientation === 'portrait' ? '70%' : '80%')};
+  width: ${(props) => (props.orientation === 'portrait' ? '90%' : '80%')};
+  height: ${(props) => (props.orientation === 'portrait' ? '80%' : '80%')};
   max-width: 600px;
   max-height: 700px;
   justify-content: center;
@@ -113,7 +114,7 @@ const BasicCard = styled(Animated.View)`
   align-items: center;
   background-color: ${(props) =>
     props.darkMode ? 'rgba(255, 255, 255, 0.1)' : '#f5fcff'};
-  padding: 7%;
+  padding: 30px;
   border-radius: 15px;
   box-shadow: ${(props) =>
     props.darkMode

@@ -2,22 +2,19 @@ import React, { useState, useRef } from 'react';
 import { useColorScheme, useWindowDimensions } from 'react-native';
 import styled from 'styled-components/native';
 import Card from './Card';
-import { VERSES } from '../data/verses';
 
 const CardCarousel = (props) => {
+  const verses = props.verses;
   const window = useWindowDimensions();
   const theme = useColorScheme();
   const darkMode = theme === 'dark';
-  const verses = VERSES;
-  const [scrollX, setScrollX] = useState(0);
   const [viewIndex, setViewIndex] = useState(0);
   const scrollView = useRef(null);
 
-  const handleScrollEnd = (event) => {
+  const handleScroll = (event) => {
     const scrollPosition = Math.round(event.nativeEvent.contentOffset.x);
     const contentWidth = Math.round(event.nativeEvent.contentSize.width);
     const index = Math.round((scrollPosition / contentWidth) * verses.length);
-    setScrollX(scrollPosition);
     setViewIndex(index);
   };
 
@@ -26,7 +23,7 @@ const CardCarousel = (props) => {
     scrollView.current.scrollTo({
       x: position,
       y: 0,
-      animated: true,
+      animated: false,
     });
   };
 
@@ -34,10 +31,9 @@ const CardCarousel = (props) => {
     <Carousel
       horizontal
       darkMode={darkMode}
-      snapToAlignment='center'
       snapToInterval={window.width}
       decelerationRate={'fast'}
-      onMomentumScrollEnd={(event) => handleScrollEnd(event)}
+      onMomentumScrollEnd={(event) => handleScroll(event)}
       onContentSizeChange={(contentWidth) => handleRotate(contentWidth)}
       ref={(ref) => (scrollView.current = ref)}
     >
