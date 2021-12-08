@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native';
 import { useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import CardCarousel from './components/CardCarousel';
+import Menu from './components/Menu';
 import { VERSES } from './data/verses';
 
 export default function App() {
@@ -11,9 +12,7 @@ export default function App() {
 
   return (
     <Container darkMode={darkMode}>
-      <SafeAreaView>
-        <Menu />
-      </SafeAreaView>
+      <Menu />
       <CardCarousel verses={VERSES} />
     </Container>
   );
@@ -24,9 +23,4 @@ const Container = styled.View`
   width: 100%;
   height: 100%;
   background-color: ${({ darkMode }) => (darkMode ? '#121212' : '#f5fcff')};
-`;
-
-const Menu = styled.View`
-  height: 50px;
-  background-color: red;
 `;
