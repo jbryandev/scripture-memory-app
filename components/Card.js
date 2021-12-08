@@ -95,7 +95,6 @@ const ViewContainer = styled.View`
   align-items: center;
   width: ${({ screenWidth }) => screenWidth}px;
   height: 100%;
-  /* background-color: yellow; */
 `;
 
 const CardContainer = styled(Animated.View)`
