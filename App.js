@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
 import { useColorScheme } from 'react-native';
 import styled from 'styled-components/native';
 import CardCarousel from './components/CardCarousel';
@@ -12,7 +11,7 @@ export default function App() {
 
   return (
     <Container darkMode={darkMode}>
-      <Menu />
+      {/* <Menu /> */}
       <CardCarousel verses={VERSES} />
     </Container>
   );
